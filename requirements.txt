@@ -1,8 +1,7 @@
 flask
 pyodbc
 azure-storage-blob
-uuid
-json
+uuid 
 requests
 logging
 time 
