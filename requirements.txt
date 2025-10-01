@@ -1,0 +1,8 @@
+flask
+pyodbc
+azure-storage-blob
+uuid
+json
+requests
+logging
+time 
