@@ -3,5 +3,4 @@ pyodbc
 azure-storage-blob
 uuid 
 requests
-logging
-time 
+logging 
