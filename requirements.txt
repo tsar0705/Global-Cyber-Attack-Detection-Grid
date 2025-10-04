@@ -1,6 +1,6 @@
 flask
+pandas
+numpy
+scikit-learn
+joblib
 pyodbc
-azure-storage-blob
-uuid 
-requests
-logging 
