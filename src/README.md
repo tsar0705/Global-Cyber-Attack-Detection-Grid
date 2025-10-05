@@ -1,0 +1,1 @@
+Source folder for React app components and files.
