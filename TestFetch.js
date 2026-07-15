@@ -5,7 +5,7 @@ function TestFetch() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/logs")
+    fetch("http://127.0.0.1:5007/logs")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
