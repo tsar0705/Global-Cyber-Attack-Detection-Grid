@@ -39,7 +39,7 @@ GCADG ingests network/security log data stored in Azure SQL, then:
 │   Bootstrap, App      │                            │                       │
 │   Insights)           │                            └──────────┬────────────┘
 └─────────────────────┘                                       │
-                                                                 │ pyodbc / pymssql
+                                                                 │ pyodbc
                                                                  ▼
                                                    ┌─────────────────────────┐
                                                    │   Azure SQL Database     │
@@ -68,7 +68,8 @@ GCADG ingests network/security log data stored in Azure SQL, then:
 - Flask + Flask-CORS
 - pandas, NumPy
 - scikit-learn (`IsolationForest`)
-- pyodbc / pymssql (Azure SQL connectivity)
+- pyodbc (Azure SQL connectivity)
+- python-dotenv (loads DB credentials from a local `.env` file)
 
 **Data**
 - Azure SQL Database table: `cybersecurity_attacks`
@@ -92,21 +93,24 @@ cd Global-Cyber-Attack-Detection-Grid
 ### 2. Backend setup
 
 ```bash
-pip install flask flask-cors pyodbc pymssql pandas numpy scikit-learn
+pip install -r requirements.txt
 ```
 
-> ⚠️ **Note:** `requirements.txt` in this repo is currently incomplete — it doesn't list `flask-cors`, `pymssql`, `pandas`, `numpy`, or `scikit-learn`, all of which `flask_backend_app.py` imports. Install them manually as shown above, or update `requirements.txt` to match.
-
-Configure your database credentials as environment variables rather than hardcoding them in `flask_backend_app.py`:
+Copy the example env file and fill in your own database credentials:
 
 ```bash
-export DB_SERVER="your-server.database.windows.net"
-export DB_NAME="your-database-name"
-export DB_USER="your-username"
-export DB_PASSWORD="your-password"
+cp .env.example .env
 ```
 
-> 🔒 **Security note:** The current version of `flask_backend_app.py` has database credentials hardcoded directly in the source. Since this is a public repository, **rotate any exposed credentials immediately** and refactor the connection logic to read from environment variables (e.g. via `python-dotenv`) before deploying or sharing this code further.
+```env
+DB_SERVER=your-server.database.windows.net
+DB_NAME=your-database-name
+DB_USER=your-username@your-server
+DB_PASSWORD=your-password
+PORT=5007
+```
+
+`.env` is already excluded via `.gitignore`, so your credentials won't be committed.
 
 Run the backend:
 
@@ -114,7 +118,7 @@ Run the backend:
 python flask_backend_app.py
 ```
 
-The API will be available at `http://127.0.0.1:5007` (update the port in the frontend fetch calls if you change it — some components currently point to `5008`, so double-check consistency between `flask_backend_app.py` and `src/Dashboard.js`).
+The API will be available at `http://127.0.0.1:5007` by default (configurable via the `PORT` variable in `.env`). The frontend (`src/Dashboard.js`, `src/TestFetch.js`) is already configured to call this same port.
 
 ### 3. Frontend setup
 
@@ -137,7 +141,8 @@ The app will open at `http://localhost:3000`.
 ├── public/                 # Static assets
 ├── build/                  # Production build output
 ├── flask_backend_app.py    # Flask API: DB access, preprocessing, anomaly detection
-├── requirements.txt        # Python dependencies (see note above)
+├── requirements.txt        # Python dependencies
+├── .env.example             # Template for required environment variables
 ├── package.json            # Node dependencies and scripts
 └── README.md
 ```
@@ -151,10 +156,14 @@ In the project directory, you can run:
 - `npm run build` – Builds the app for production into the `build/` folder
 - `npm run eject` – Ejects the Create React App configuration (one-way operation)
 
+## 🔒 Security Note
+
+An earlier version of this repository had Azure SQL credentials hardcoded directly in `flask_backend_app.py`. That's been fixed — credentials are now loaded from environment variables via `.env` (which is git-ignored) — but the old password is still visible in this repository's git history to anyone who looks. If you haven't already, **rotate that Azure SQL password** so the leaked history no longer matters.
+
 ## 🗺️ Roadmap Ideas
 
-- [ ] Move DB credentials fully to environment variables / a secrets manager
-- [ ] Align backend and frontend on a single port configuration
+- [x] Move DB credentials to environment variables
+- [ ] Rotate any previously exposed Azure SQL credentials
 - [ ] Add authentication for the API endpoints
 - [ ] Cache/persist trained anomaly model instead of retraining per request
 - [ ] Add automated tests for the Flask endpoints
