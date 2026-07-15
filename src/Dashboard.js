@@ -47,7 +47,7 @@ function Dashboard() {
 
   // Fetch stats from backend
   const fetchStats = () => {
-    fetch("http://127.0.0.1:5008/stats")
+    fetch("http://127.0.0.1:5007/stats")
       .then((res) => res.json())
       .then((data) => {
         setRegionCounts(data.region_counts || []);
@@ -61,7 +61,7 @@ function Dashboard() {
 
   // Fetch logs from backend
   const fetchLogs = () => {
-    fetch("http://127.0.0.1:5008/logs")
+    fetch("http://127.0.0.1:5007/logs")
       .then((res) => res.json())
       .then((data) => {
         allLogs.current = Array.isArray(data) ? data : [];
@@ -78,7 +78,7 @@ function Dashboard() {
 
   // Fetch anomalies from backend
   const fetchAnomalies = () => {
-    fetch("http://127.0.0.1:5008/anomalies")
+    fetch("http://127.0.0.1:5007/anomalies")
       .then((res) => res.json())
       .then((data) => {
         setAnomalies(data.anomalies || []);
