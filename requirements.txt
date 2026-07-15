@@ -1,6 +1,10 @@
 flask
+flask-cors
 pyodbc
+pymssql
+pandas
+numpy
+scikit-learn
 azure-storage-blob
-uuid 
 requests
-logging 
+python-dotenv
