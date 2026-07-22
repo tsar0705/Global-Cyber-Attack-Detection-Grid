@@ -156,22 +156,6 @@ In the project directory, you can run:
 - `npm run build` – Builds the app for production into the `build/` folder
 - `npm run eject` – Ejects the Create React App configuration (one-way operation)
 
-## 🔒 Security Note
-
-An earlier version of this repository had Azure SQL credentials hardcoded directly in `flask_backend_app.py`. That's been fixed — credentials are now loaded from environment variables via `.env` (which is git-ignored) — but the old password is still visible in this repository's git history to anyone who looks. If you haven't already, **rotate that Azure SQL password** so the leaked history no longer matters.
-
-## 🗺️ Roadmap Ideas
-
-- [x] Move DB credentials to environment variables
-- [ ] Rotate any previously exposed Azure SQL credentials
-- [ ] Add authentication for the API endpoints
-- [ ] Cache/persist trained anomaly model instead of retraining per request
-- [ ] Add automated tests for the Flask endpoints
-
-## 📄 License
-
-No license file is currently included in this repository. Consider adding one (e.g. MIT) if you intend for others to use or contribute to this project.
-
 ## 🙋 About
 
 Built as a project exploring real-time cybersecurity monitoring, geospatial visualization, and unsupervised anomaly detection using an Azure-backed data pipeline.
